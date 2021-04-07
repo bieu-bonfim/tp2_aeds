@@ -64,7 +64,15 @@ void MenuAutomatico() {
 
     c = (n/3)*2;
 
+    clock_t t;
+    t = clock();
+
     GerarMatriz(n, c);
+
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+
+    printf("\n A combinacao levou %f segundos para ser executado. \n", time_taken);
 
     int opcao;
 
@@ -134,8 +142,15 @@ void MenuInterativo() {
 
     PrintExpressao(E, c);
 
+    clock_t t;
+    t = clock();
+
     GerarCombinacoes(n, c, arr, E, 0);
 
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+
+    printf("\n A combinacaao levou %f segundos para ser executada. \n", time_taken);
     int opcao;
 
     printf("\n\n1 - Voltar ao Menu Interativo");
@@ -242,6 +257,7 @@ int CheckExpressao(int E[][3][2], int arr[], int c) {
 
 void GerarCombinacoes(int n, int c, int arr[], int E[][3][2], int i)
 {
+
     if (i == n) {
         PrintCombinacoes(arr, n, E, c);
         return;
