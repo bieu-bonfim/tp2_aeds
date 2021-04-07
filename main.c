@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 void MenuInicial();
 void MenuInterativo();
@@ -6,6 +8,77 @@ void MenuAutomatico();
 void GerarCombinacoes(int n, int c, int arr[], int E[99][3][2], int i);
 void PrintExpressao(int E[99][3][2], int c);
 int CheckExpressao(int E[99][3][2], int arr[], int c);
+void GerarMatriz(int n, int c);
+
+void GerarMatriz(int n, int c) {
+    int M[c][n], val[3], E[1000][3][2];
+    int arr[100];
+
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < n; j++) {
+            M[i][j] = 0;
+        }
+    }
+
+    srand(time(0));
+
+    for (int i = 0; i < c; ++i) {
+        int in, im;
+
+        im = 0;
+
+        for (in = 0; in < n && im < 3; ++in) {
+            int rn = n - in;
+            int rm = 3 - im;
+            if (rand() % rn < rm) {
+                val[im++] = in;
+            }
+        }
+
+        E[i][0][0] = val[0] + 1;
+        E[i][0][1] = (rand() % 2) + 1;
+        E[i][1][0] = val[1] + 1;
+        E[i][1][1] = (rand() % 2) + 1;
+        E[i][2][0] = val[2] + 1;
+        E[i][2][1] = (rand() % 2) + 1;
+    }
+
+    PrintExpressao(E, c);
+    GerarCombinacoes(n, c, arr, E, 0);
+
+}
+
+
+
+
+
+void MenuAutomatico() {
+    int n, c;
+
+    printf("\n------------------------");
+    printf("\n--- Menu  Automatico ---");
+    printf("\n------------------------");
+
+    printf("\n\nInsira o valor de N: ");
+    scanf("%d", &n);
+
+    c = (n/3)*2;
+
+    GerarMatriz(n, c);
+
+    int opcao;
+
+    printf("\n\n1 - Voltar ao Menu Interativo");
+    printf("\n2 - Voltar ao Menu Inicial");
+    printf("\n\nOpcao escolhida: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        MenuAutomatico();
+    } else {
+        MenuInicial();
+    }
+}
 
 void MenuInicial() {
     int opcao;
@@ -23,15 +96,15 @@ void MenuInicial() {
     if (opcao == 1) {
         MenuInterativo();
     } else if (opcao == 2) {
-//        MenuAutomatico();
+        MenuAutomatico();
     }
 
 }
 
 void MenuInterativo() {
     int c, n, ci, est;
-    int E[99][3][2];
-    int arr[99];
+    int E[100][3][2];
+    int arr[100];
 
     printf("\n------------------------");
     printf("\n--- Menu  Interativo ---");
@@ -62,14 +135,27 @@ void MenuInterativo() {
     PrintExpressao(E, c);
 
     GerarCombinacoes(n, c, arr, E, 0);
+
+    int opcao;
+
+    printf("\n\n1 - Voltar ao Menu Interativo");
+    printf("\n2 - Voltar ao Menu Inicial");
+    printf("\n\nOpcao escolhida: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        MenuInterativo();
+    } else {
+        MenuInicial();
+    }
 }
 
-void PrintExpressao(int E[99][3][2], int c) {
+void PrintExpressao(int E[][3][2], int c) {
     printf("E = ");
     for (int i = 0; i < c; i++) {
         printf("(");
         for (int j = 0; j < 3; j++) {
-            if (E[i][j][1] == 1) {
+            if (E[i][j][1] == 2) {
                 printf("X%d", E[i][j][0]);
             } else {
                 printf("!X%d", E[i][j][0]);
@@ -86,8 +172,12 @@ void PrintExpressao(int E[99][3][2], int c) {
     printf("\n");
 }
 
-void PrintCombinacoes(int arr[], int n, int E[99][3][2], int c)
+void PrintCombinacoes(int arr[], int n, int E[][3][2], int c)
 {
+    int result = CheckExpressao(E, arr, c);
+    if (result == 0) {
+        return;
+    }
     printf("{");
     for (int i = 0; i < n; i++) {
         if (arr[i] == 1) {
@@ -101,12 +191,10 @@ void PrintCombinacoes(int arr[], int n, int E[99][3][2], int c)
         }
     }
     printf("}");
-    int result = CheckExpressao(E, arr, c);
-    printf(" = %d", result);
-    printf("\n");
+    printf("  ");
 }
 
-int CheckExpressao(int E[99][3][2], int arr[], int c) {
+int CheckExpressao(int E[][3][2], int arr[], int c) {
     int results[c];
     for (int i = 0; i < c; i++) {
 
@@ -115,21 +203,21 @@ int CheckExpressao(int E[99][3][2], int arr[], int c) {
         c2 = arr[E[i][1][0]-1];
         c3 = arr[E[i][2][0]-1];
 
-        if (E[i][0][1] == 2) {
+        if (E[i][0][1] == 1) {
             if (c1 == 1) {
                 c1 = 0;
             } else {
                 c1 = 1;
             }
         }
-        if (E[i][1][1] == 2) {
+        if (E[i][1][1] == 1) {
             if (c2 == 1) {
                 c2 = 0;
             } else {
                 c2 = 1;
             }
         }
-        if (E[i][2][1] == 2) {
+        if (E[i][2][1] == 1) {
             if (c3 == 1) {
                 c3 = 0;
             } else {
@@ -152,7 +240,7 @@ int CheckExpressao(int E[99][3][2], int arr[], int c) {
     return 1;
 }
 
-void GerarCombinacoes(int n, int c, int arr[], int E[99][3][2], int i)
+void GerarCombinacoes(int n, int c, int arr[], int E[][3][2], int i)
 {
     if (i == n) {
         PrintCombinacoes(arr, n, E, c);
