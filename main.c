@@ -278,15 +278,7 @@ void GerarCombinacoes(int n, int c, int arr[], int E[][3][2], int i)
 
 int main() {
 
-    int n;
-
-//    printf("\nInsira a quantidade de variaveis: ");
-//    scanf("%d", &n);
-
-
-
     MenuInicial();
-
 
     return 0;
 }
