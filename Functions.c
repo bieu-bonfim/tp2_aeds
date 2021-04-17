@@ -23,9 +23,9 @@ void GerarMatriz(int n, int c) {
     for (int i = 0; i < c; ++i) {
 
         int in, im;
-
         im = 0;
 
+        // Geração de um valor aleatório que não se repete
         for (in = 0; in < n && im < 3; ++in) {
             int rn = n - in;
             int rm = 3 - im;
@@ -93,7 +93,7 @@ void PrintCombinacoes(int arr[], int n, int E[][3][2], int c)
         }
     }
     printf("}");
-    printf("  ");
+    printf("\n");
 }
 
 
@@ -101,12 +101,12 @@ void PrintCombinacoes(int arr[], int n, int E[][3][2], int c)
  *  Verificamos cada valor passado dos literais e comparamos dentro da expressão,
  *  caso o valor 1 seja encontrado pelo menos uma vez em cada cláusula, é verdadeiro.
  */
-
 int CheckExpressao(int E[][3][2], int arr[], int c) {
     int results[c];
     for (int i = 0; i < c; i++) {
 
         int c1, c2, c3;
+
         c1 = arr[E[i][0][0]-1];
         c2 = arr[E[i][1][0]-1];
         c3 = arr[E[i][2][0]-1];
@@ -115,21 +115,24 @@ int CheckExpressao(int E[][3][2], int arr[], int c) {
             if (c1 == 1) {
                 c1 = 0;
             } else {
-                c1 = 1;
+                results[i] = 1;
+                continue;
             }
         }
         if (E[i][1][1] == 1) {
             if (c2 == 1) {
                 c2 = 0;
             } else {
-                c2 = 1;
+                results[i] = 1;
+                continue;
             }
         }
         if (E[i][2][1] == 1) {
             if (c3 == 1) {
                 c3 = 0;
             } else {
-                c3 = 1;
+                results[i] = 1;
+                continue;
             }
         }
         if (c1 == 1| c2 == 1| c3 == 1) {

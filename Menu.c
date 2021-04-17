@@ -51,7 +51,7 @@ void MenuAutomatico() {
 
     int opcao;
 
-    printf("\n\n1 - Voltar ao Menu Interativo");
+    printf("\n\n1 - Voltar ao Menu Automatico");
     printf("\n2 - Voltar ao Menu Inicial");
     printf("\n\nOpcao escolhida: ");
     scanf("%d", &opcao);
